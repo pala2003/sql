@@ -40,41 +40,43 @@ filtered by vendor IDs between 8 and 10 (inclusive) using either:
 /*
 the below one is all customer purchases with respect to a product. So, I use SUM
 */
-Select DISTINCT c.customer_id, c.customer_first_name || " "  || c.customer_last_name as customer_name , p.product_name , sum((quantity * cost_to_customer_per_qty)) as price
+
+/*Select  c.customer_id, c.customer_first_name || " "  || c.customer_last_name as customer_name , p.product_name , sum((quantity * cost_to_customer_per_qty)) as price
 from customer c INNER JOIN
 customer_purchases cp on c.customer_id = cp.customer_id
 INNER JOIN product p on cp.product_id = p.product_id
 where cp.vendor_id >= 8 and cp.vendor_id <= 10
 Group by  c.customer_id, cp.product_id 
-order by c.customer_id;
+order by c.customer_id;*/
 
 /*
 the below one is all customer purchases with respect total purchase. So, I use SUM
 */
-Select  c.customer_id, c.customer_first_name || " "  || c.customer_last_name as customer_name, sum((quantity * cost_to_customer_per_qty) ) as price
-from customer c INNER JOIN
-customer_purchases cp on c.customer_id = cp.customer_id
+Select  *, sum((quantity * cost_to_customer_per_qty) ) as price
+from 
+customer_purchases cp
 where cp.vendor_id >= 8 and cp.vendor_id <= 10
-Group by  c.customer_id
-order by c.customer_id;
+Group by  cp.customer_id
+order by cp.customer_id;
 
 
 -- option 2
 
+/*
 Select DISTINCT c.customer_id, c.customer_first_name || " "  || c.customer_last_name as customer_name , p.product_name , sum((quantity * cost_to_customer_per_qty)) as price
 from customer c INNER JOIN
 customer_purchases cp on c.customer_id = cp.customer_id
 INNER JOIN product p on cp.product_id = p.product_id
 where cp.vendor_id  BETWEEN 8 AND 10
 Group by  c.customer_id, cp.product_id 
-order by c.customer_id;
+order by c.customer_id; */
 
-Select  c.customer_id, c.customer_first_name || " "  || c.customer_last_name as customer_name, sum((quantity * cost_to_customer_per_qty) ) as price
-from customer c INNER JOIN
-customer_purchases cp on c.customer_id = cp.customer_id
+Select  *, sum((quantity * cost_to_customer_per_qty) ) as price
+from 
+customer_purchases cp
 where cp.vendor_id  BETWEEN 8 AND 10
-Group by  c.customer_id
-order by c.customer_id;
+Group by  cp.customer_id
+order by cp.customer_id;
 
 --CASE
 /* 1. Products can be sold by the individual unit or by bulk measures like lbs. or oz. 
