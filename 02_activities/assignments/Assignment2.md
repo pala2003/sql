@@ -53,9 +53,14 @@ The store wants to keep customer addresses. Propose two architectures for the CU
 
 **HINT:** search type 1 vs type 2 slowly changing dimensions. 
 
-```
-Your answer...
-```
+Slowly Changing Dimensions Type 1:
+
+In this approach, only the current address is maintained for a customer. When a customer's address changes, the existing record is updated, and the old address is lost. Type 1 is suitable for scenarios where historical address information is not crucial, such as when a bookstore doesn't need to track past addresses for customer service inquiries or historical order shipping details. 
+
+Slowly Changing Dimensions Type 2:
+
+This architecture preserves a complete history of customer addresses. Each time a customer's address changes, a new record is added to the customer_address table, along with a start date and an end date (or "effective until" date). The previous address record remains, but its end date is updated to reflect when the new address became effective. This ensures a full historical record of addresses associated with each customer over time. If a bookstore aims to develop robust customer service solutions, Type 2 provides a better design by enabling access to past address information.
+Note: In this design we will need a surrogate key as the previous Address ID/Customer Address ID in Type 1 will not be usefull as a Primary Key
 
 ***
 
