@@ -281,5 +281,34 @@ When you have all of these components, you can run the update statement. */
 ALTER TABLE product_units
 ADD current_quantity INT;
 
-select * from vendor_inventory ;
+update product_units
+set current_quantity = latset_qty_product.last_quantity
+from
+(
+		select p.product_id, coalesce(quantity,0) as last_quantity from
+		product_units p
+		left outer join 
+		(
+				select quantity
+				,product_id
+				from
+				(
+						select quantity
+						,product_id
+						, row_number() over(PARTITION by product_id order by product_id, market_date desc) as latest_quantity 
+						 from vendor_inventory 
+				 ) 
+				 X
+				 where latest_quantity = 1
+		 )  last_qty
+		 on p.product_id = last_qty.product_id
+ ) 
+ latset_qty_product
+ 
+ where product_units.product_id = latset_qty_product.product_id;
+ 
+ select * from product_units;
+ 
+ 
 
+ 
